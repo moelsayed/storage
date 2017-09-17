@@ -292,10 +292,7 @@ func (d *RancherStorageDriver) Unmount(request volume.UnmountRequest) volume.Res
 
 func (d *RancherStorageDriver) unmount(mntDest string) error {
 	d.mountLock.Lock()
-	logrus.Infof("melsayed_umount_lock")
 	defer d.mountLock.Unlock()
-	defer logrus.Infof("melsayed_umount_unlock")
-
 
 	logrus.Infof("Unmounting %s", mntDest)
 	device, refCount, err := mount.GetDeviceNameFromMount(d.mounter, mntDest)

@@ -402,4 +402,4 @@ delete() {
 }
 
 # Every script must call main as such
-main "$@"
+main "timeout 60 $@"
