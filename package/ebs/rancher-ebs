@@ -5,7 +5,7 @@
 WAIT_SLEEP_TIME_IN_SECONDS=2
 
 
-aws_cmd="$aws_cmd --cli-read-timeout 10 --cli-connect-timeout 10"
+aws_cmd="aws --cli-read-timeout 10 --cli-connect-timeout 10"
 if [ -e "$(dirname $0)/common.sh" ]; then
     source $(dirname $0)/common.sh
 elif [ -e "$(dirname $0)/../common/common.sh" ]; then
