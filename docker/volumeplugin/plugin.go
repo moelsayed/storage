@@ -70,7 +70,6 @@ type RancherStorageDriver struct {
 	mounter         *mount.SafeFormatAndMount
 	FsType          string
 	cli             *dockerClient.Client
-	mountLock       sync.Mutex
 }
 
 func (d *RancherStorageDriver) init() error {
@@ -192,9 +191,6 @@ func (d *RancherStorageDriver) doAttach(name, opts string) (*CmdOutput, error) {
 }
 
 func (d *RancherStorageDriver) Attach(request AttachRequest) volume.Response {
-	d.mountLock.Lock()
-	defer d.mountLock.Unlock()
-
 	logrus.WithFields(logrus.Fields{
 		"name": request.Name,
 	}).Info("attach.request")
@@ -220,9 +216,6 @@ func (d *RancherStorageDriver) Attach(request AttachRequest) volume.Response {
 }
 
 func (d *RancherStorageDriver) Mount(request volume.MountRequest) volume.Response {
-	d.mountLock.Lock()
-	defer d.mountLock.Unlock()
-
 	logrus.WithFields(logrus.Fields{
 		"name": request.Name,
 	}).Info("mount.request")
@@ -291,9 +284,6 @@ func (d *RancherStorageDriver) Unmount(request volume.UnmountRequest) volume.Res
 }
 
 func (d *RancherStorageDriver) unmount(mntDest string) error {
-	d.mountLock.Lock()
-	defer d.mountLock.Unlock()
-
 	logrus.Infof("Unmounting %s", mntDest)
 	device, refCount, err := mount.GetDeviceNameFromMount(d.mounter, mntDest)
 	if err != nil {
